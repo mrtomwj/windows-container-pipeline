@@ -1,6 +1,6 @@
 # IaC to create a CI/CD Pipeline for building and deploying Windows Containers in AWS
 
-###Assumptions:
+### Assumptions:
 * A destination VPC and subnet already exist in the account
 * Either a public subnet or NAT gateway exist to allow outbound internet access
 * An ec2 instance keypair has already been created
