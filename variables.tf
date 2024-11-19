@@ -15,11 +15,15 @@ variable "ecr_repo_name" {
   type        = string
 }
 variable "vpc_id" {
-  description = "Enter the VPC ID where EC2 instances will be launched"
+  description = "Enter the VPC ID where EC2 instances and ECS will be launched"
   type        = string
 }
 variable "subnet_id" {
-  description = "Enter the subnet ID where EC2 instances will be launched"
+  description = "Enter the subnet ID where EC2 instances and ECS will be launched"
+  type        = string
+}
+variable "subnet_id2" {
+  description = "Enter second subnet for ALB"
   type        = string
 }
 variable "instance_type" {

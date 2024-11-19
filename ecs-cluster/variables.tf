@@ -14,6 +14,10 @@ variable "subnet_id" {
   description = "Enter the subnet ID where Tasks will be launched"
   type        = string
 }
+variable "subnet_id2" {
+  description = "Enter a second subnet ID for ALB"
+  type        = string
+}
 variable "ecr_url" {
   description = "Enter the Url for the ECR Repository"
   type        = string

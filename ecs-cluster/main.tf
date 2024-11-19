@@ -85,12 +85,79 @@ resource "aws_ecs_service" "example_service" {
     assign_public_ip = true
     security_groups = [aws_security_group.example_sg.id] 
   }
+    load_balancer {
+    target_group_arn = aws_lb_target_group.example_target_group.arn
+    container_name   = "example-container"
+    container_port   = 80
+  }
 }
 
 # Security group to allow inbound HTTP traffic (port 80)
 resource "aws_security_group" "example_sg" {
   name        = "example-sg"
   description = "Allow inbound HTTP traffic"
+  vpc_id      = var.vpc_id
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    security_groups = [aws_security_group.alb_sg.id]  # Allow traffic only from ALB security group
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# Create an Application Load Balancer (ALB)
+resource "aws_lb" "example_alb" {
+  name               = "example-alb"
+  internal           = false  # Set to true if this is an internal ALB
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.alb_sg.id]
+  subnets            = [var.subnet_id,var.subnet_id2]  # Subnet IDs for your VPC
+  enable_deletion_protection = false
+  idle_timeout        = 60  # Time in seconds
+
+  tags = {
+    Name = "example-alb"
+  }
+}
+
+# Create the target group for the ECS service
+resource "aws_lb_target_group" "example_target_group" {
+  name     = "example-target-group"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = var.vpc_id
+  target_type = "ip"
+  health_check {
+    path                = "/"
+    interval            = 30
+    timeout             = 20
+    healthy_threshold   = 2
+    unhealthy_threshold = 3
+  }
+}
+
+# Create an HTTP listener for the ALB
+resource "aws_lb_listener" "http" {
+  load_balancer_arn = aws_lb.example_alb.arn
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.example_target_group.arn
+  }
+}
+
+# Security group for ALB
+resource "aws_security_group" "alb_sg" {
+  name        = "alb-sg"
+  description = "Allow inbound HTTP traffic to ALB"
   vpc_id      = var.vpc_id
 
   ingress {
@@ -108,3 +175,7 @@ resource "aws_security_group" "example_sg" {
   }
 }
 
+# Outputs
+output "alb_url" {
+  value = aws_lb.example_alb.dns_name
+}
