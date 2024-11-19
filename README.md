@@ -1,10 +1,10 @@
 # IaC to create a CI/CD Pipeline for building and deploying Windows Containers in AWS
 
-Assumptions:
-A destination VPC and subnet already exist in the account
-Either a public subnet or NAT gateway exist to allow outbound internet access
-An ec2 instance keypair has already been created
-On initial deployment, expect some stopped/failed tasks on the ECS service until the first windows container build is complete.  These will drop away once the service is stable.
+###Assumptions:
+* A destination VPC and subnet already exist in the account
+* Either a public subnet or NAT gateway exist to allow outbound internet access
+* An ec2 instance keypair has already been created
+* On initial deployment, expect some stopped/failed tasks on the ECS service until the first windows container build is complete.  These will drop away once the service is stable.
 
 
 The Lambda url from the output can be used as webhook to trigger the container build from your app source.
