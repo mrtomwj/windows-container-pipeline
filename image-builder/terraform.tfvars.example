@@ -1,0 +1,8 @@
+ecr_repo_name = 
+vpc_id = 
+subnet_id = 
+bucket_name = 
+aws_region = 
+instance_type = 
+instance_keypair =
+source_url = 

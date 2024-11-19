@@ -1,0 +1,5 @@
+aws_region = 
+cluster_name =  
+vpc_id = 
+subnet_id = 
+ecr_url = 

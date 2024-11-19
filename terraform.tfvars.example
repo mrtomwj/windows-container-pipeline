@@ -1,0 +1,10 @@
+aws_region = 
+cluster_name = 
+vpc_id = 
+subnet_id = 
+ecr_repo_name = 
+bucket_name = 
+instance_type = 
+instance_keypair = 
+source_url = 
+
